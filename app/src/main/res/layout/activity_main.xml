@@ -20,7 +20,7 @@
     <Button
         android:id="@+id/button"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="50dp"
         android:layout_margin="5dp"
         android:layout_alignParentBottom="true"
         android:text="팀 예약 현황" />

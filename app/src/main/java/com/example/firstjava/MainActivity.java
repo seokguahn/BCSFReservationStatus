@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), ReservationStatusActivity.class);
             intent.putExtra("intoTitle", title);
             intent.putExtra("intoUrl", url);
+            intent.putExtra("intoSearchType", ReservationStatusActivity.TYPE_SEARCH);
             startActivity(intent);
         }
     };
@@ -67,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ReservationStatusActivity.class);
                 intent.putExtra("intoTitle", "팀 예약 현황");
-                intent.putExtra("intoUrl", "TEAM_SEARCH");
+                intent.putExtra("intoUrl", "");
+                intent.putExtra("intoSearchType", ReservationStatusActivity.TYPE_SEARCH_ALL);
                 intent.putExtra("intoPlace", itemPlaces);
                 intent.putExtra("intoLink", itemLinks);
                 startActivity(intent);

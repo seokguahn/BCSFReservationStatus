@@ -8,8 +8,10 @@
         android:id="@+id/item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ITEM"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp" />
+        android:layout_marginLeft="20dp"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:text="ITEM"/>
 
 </RelativeLayout>

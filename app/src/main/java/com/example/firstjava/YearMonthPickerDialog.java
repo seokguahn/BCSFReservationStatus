@@ -3,7 +3,6 @@ package com.example.firstjava;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +20,16 @@ public class YearMonthPickerDialog extends DialogFragment {
     private DatePickerDialog.OnDateSetListener listener;
     public Calendar cal = Calendar.getInstance();
 
+    private int year;
+    private int month;
+
     public void setListener(DatePickerDialog.OnDateSetListener listener) {
         this.listener = listener;
+    }
+
+    public void setDate(int year, int month) {
+        this.year = year;
+        this.month = month;
     }
 
     private Button btnConfirm;
@@ -58,9 +65,8 @@ public class YearMonthPickerDialog extends DialogFragment {
 
         monthPicker.setMinValue(1);
         monthPicker.setMaxValue(12);
-        monthPicker.setValue(cal.get(Calendar.MONTH) + 1);
+        monthPicker.setValue(month);
 
-        int year = cal.get(Calendar.YEAR);
         yearPicker.setMinValue(MIN_YEAR);
         yearPicker.setMaxValue(MAX_YEAR);
         yearPicker.setValue(year);
