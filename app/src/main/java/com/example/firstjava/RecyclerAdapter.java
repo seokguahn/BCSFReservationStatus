@@ -48,8 +48,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             }
         });
 
-        if(item.getReceptionStatus().equals("접수중")) {
-            holder.receptionStatus.setBackgroundColor(Color.parseColor("#91caed"));
+        if(item.getReceptionStatus().contains("접수중")) {
+            holder.receptionStatus.setBackgroundColor(Color.parseColor("#e8f1fa"));
+            holder.receptionStatus.setTextColor(Color.parseColor("#61b2f0"));
         }
     }
 

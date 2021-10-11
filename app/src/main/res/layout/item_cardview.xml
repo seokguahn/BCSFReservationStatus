@@ -34,18 +34,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center|left"
-                    android:layout_margin="10dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
                     android:padding="5dp"
-                    android:background="@color/black"
-                    android:textColor="@color/white"
                     android:text="대관료" />
 
                 <TextView
                     android:id="@+id/bill"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center|left"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
                     android:text="비용" />
 
                 <View
@@ -57,11 +56,11 @@
                     android:id="@+id/receptionStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center|left"
+                    android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:padding="5dp"
-                    android:background="@color/black"
-                    android:textColor="@color/white"
+                    android:background="#aeafb0"
+                    android:textColor="#6f7070"
                     android:text="접수상태" />
 
             </LinearLayout>

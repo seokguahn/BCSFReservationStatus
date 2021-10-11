@@ -16,10 +16,8 @@
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginLeft="10dp"
             android:padding="5dp"
-            android:background="@color/black"
-            android:textColor="@color/white"
+            android:textStyle="bold"
             android:textSize="16dp"
             android:text="팀명"/>
 
@@ -28,7 +26,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:inputType="textPersonName"
             android:textSize="18dp"
@@ -45,10 +42,8 @@
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginLeft="10dp"
             android:padding="5dp"
-            android:background="@color/black"
-            android:textColor="@color/white"
+            android:textStyle="bold"
             android:textSize="16dp"
             android:text="날짜"/>
 
@@ -56,7 +51,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginLeft="10dp"
             android:id="@+id/textViewDate"
             android:textSize="18dp"
             android:text="2021년 01월"/>
@@ -79,21 +73,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:gravity="center"
         android:padding="5dp"
-        android:background="@color/black"
-        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="16dp"
         android:text="예약현황" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/reservationRecyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="2dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

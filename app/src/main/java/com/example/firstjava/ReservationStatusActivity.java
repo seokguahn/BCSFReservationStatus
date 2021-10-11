@@ -108,16 +108,24 @@ public class ReservationStatusActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 filterName = editText.getText().toString();
-                items.clear();
 
                 if(searchType == TYPE_SEARCH_ALL) {
+                    if(filterName.isEmpty()) {
+                        Toast.makeText(ReservationStatusActivity.this, "팀명을 입력하세요.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     teamSearchCount = 0;
                     map.clear();
+
+                    reservationPlace = itemPlaces.get(teamSearchCount);
+                    reservationUrl = itemLinks.get(teamSearchCount);
                 }
 
-                search.setEnabled(false);
-                callJsoupAsyncTask();
+                items.clear();
+                setEnableControl(false);
 
+                callJsoupAsyncTask();
             }
         });
 
@@ -125,6 +133,11 @@ public class ReservationStatusActivity extends AppCompatActivity {
         setYearMonth(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1);
 
         callJsoupAsyncTask();
+    }
+
+    public void setEnableControl(boolean isEnable) {
+        editText.setEnabled(isEnable);
+        search.setEnabled(isEnable);
     }
 
     public void setYearMonth(int year, int month) {
@@ -168,7 +181,7 @@ public class ReservationStatusActivity extends AppCompatActivity {
                     if (date.startsWith(replace_Month)) {
                         date = date.substring(replace_Month.length(), date.length());
                     }
-                    date = search_Year + "년 " + replace_Month + "월 " + date + "일";
+                    date = replace_Month + "." + date;
 
                     String time = "";
                     String team = "";
@@ -186,7 +199,7 @@ public class ReservationStatusActivity extends AppCompatActivity {
                             team = liString;
 
                             if(filterName.equals("") || team.contains(filterName)) {
-                                result = time + " | " + team;
+                                result = time + "#" + team;
                                 reservations.add(result);
                             }
                         }
@@ -211,7 +224,7 @@ public class ReservationStatusActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             Toast.makeText(ReservationStatusActivity.this, "검색 완료", Toast.LENGTH_SHORT).show();
             recyclerAdapter.notifyDataSetChanged();
-            search.setEnabled(true);
+            setEnableControl(true);
         }
     }
 
@@ -236,7 +249,7 @@ public class ReservationStatusActivity extends AppCompatActivity {
                     if (date.startsWith(replace_Month)) {
                         date = date.substring(replace_Month.length(), date.length());
                     }
-                    date = search_Year + "년 " + replace_Month + "월 " + date + "일";
+                    date = replace_Month + "." + date;
 
                     String time = "";
                     String team = "";
@@ -254,7 +267,7 @@ public class ReservationStatusActivity extends AppCompatActivity {
                             team = liString;
 
                             if(team.contains(filterName)) {
-                                result = time + " | " + team + " | " + reservationPlace;
+                                result = time + "#" + team + "#" + reservationPlace;
                                 reservations.add(result);
                             }
                         }
@@ -308,7 +321,7 @@ public class ReservationStatusActivity extends AppCompatActivity {
                 }
 
                 recyclerAdapter.notifyDataSetChanged();
-                search.setEnabled(true);
+                setEnableControl(true);
             }
         }
     }

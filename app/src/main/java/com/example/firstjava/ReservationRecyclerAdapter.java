@@ -38,7 +38,19 @@ public class ReservationRecyclerAdapter extends RecyclerView.Adapter<RecyclerAda
         final ReservationItem item = items.get(position);
         if (item.type == TYPE_ITEM) {
             ListItemViewHolder itemViewHolder = (ListItemViewHolder)holder;
-            itemViewHolder.item_title.setText(item.text);
+
+            String[] array = item.text.split("#");
+            String time = array[0];
+            String team = array[1];
+            String place = (array.length > 2) ? " | " + array[2] : "";
+
+            team = team.replace("예약완료 ", "");
+            team = team.substring(1);
+            team = team.substring(0, team.length()-1);
+            team = team + place;
+
+            itemViewHolder.item_time.setText(time);
+            itemViewHolder.item_team.setText(team);
         }
         else if (item.type == TYPE_HEADER) {
             ListHeaderViewHolder itemViewHolder = (ListHeaderViewHolder)holder;
@@ -66,11 +78,13 @@ public class ReservationRecyclerAdapter extends RecyclerView.Adapter<RecyclerAda
     }
 
     private static class ListItemViewHolder extends RecyclerAdapter.ViewHolder {
-        public TextView item_title;
+        public TextView item_time;
+        public TextView item_team;
 
         public ListItemViewHolder(View itemView) {
             super(itemView);
-            item_title = (TextView) itemView.findViewById(R.id.item_title);
+            item_time = (TextView) itemView.findViewById(R.id.item_time);
+            item_team = (TextView) itemView.findViewById(R.id.item_team);
         }
     }
 }
