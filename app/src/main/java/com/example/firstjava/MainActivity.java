@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -25,6 +26,8 @@ import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    ProgressDialog customProgressDialog;
 
     Button button;
     ArrayList<Item> items = new ArrayList<>();
@@ -49,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //
+        customProgressDialog = new ProgressDialog(this);
+        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        //
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setHasFixedSize(true);
@@ -58,7 +66,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerAdapter.setItemClickCallBackListener(clickCallbackListener);
         recyclerView.setAdapter(recyclerAdapter);
 
-        // 목록 검색
+        //
+        customProgressDialog.show();
         JATPlaygroundName jsoupAsyncTask = new JATPlaygroundName();
         jsoupAsyncTask.execute();
 
@@ -110,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
+            customProgressDialog.dismiss();
             recyclerAdapter.notifyDataSetChanged();
         }
     }

@@ -1,6 +1,7 @@
 package com.example.firstjava;
 
 import android.app.DatePickerDialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -39,6 +40,8 @@ public class ReservationStatusActivity extends AppCompatActivity {
     private int searchType;
     private ArrayList<String> itemPlaces = new ArrayList<>();
     private ArrayList<String> itemLinks = new ArrayList<>();
+
+    private ProgressDialog customProgressDialog;
 
     private EditText editText;
     private TextView textViewDate;
@@ -80,6 +83,10 @@ public class ReservationStatusActivity extends AppCompatActivity {
             teamSearchCount = 0;
         }
         getSupportActionBar().setTitle(reservationTitle);
+
+        //
+        customProgressDialog = new ProgressDialog(this);
+        customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         //
         editText = (EditText) findViewById(R.id.editText);
@@ -151,10 +158,12 @@ public class ReservationStatusActivity extends AppCompatActivity {
 
     public void callJsoupAsyncTask() {
         if(searchType == TYPE_SEARCH) {
+            customProgressDialog.show();
             JATReservationState jsoupAsyncTask = new JATReservationState();
             jsoupAsyncTask.execute();
         }
         else if(searchType == TYPE_SEARCH_ALL && filterName.equals("") == false) {
+            customProgressDialog.show();
             JATAllReservationState jsoupAsyncTask = new JATAllReservationState();
             jsoupAsyncTask.execute();
         }
@@ -222,7 +231,8 @@ public class ReservationStatusActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
-            Toast.makeText(ReservationStatusActivity.this, "검색 완료", Toast.LENGTH_SHORT).show();
+            customProgressDialog.dismiss();
+
             recyclerAdapter.notifyDataSetChanged();
             setEnableControl(true);
         }
@@ -308,7 +318,7 @@ public class ReservationStatusActivity extends AppCompatActivity {
                 callJsoupAsyncTask();
             }
             else {
-                Toast.makeText(ReservationStatusActivity.this, "검색 완료", Toast.LENGTH_SHORT).show();
+                customProgressDialog.dismiss();
 
                 List<String> keyList = new ArrayList<>(map.keySet());
                 keyList.sort((s1, s2)->s1.compareTo(s2));
