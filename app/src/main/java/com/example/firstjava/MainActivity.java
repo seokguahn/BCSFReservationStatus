@@ -9,11 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -22,8 +18,9 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,11 +49,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //
         customProgressDialog = new ProgressDialog(this);
         customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        //
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setHasFixedSize(true);
@@ -66,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerAdapter.setItemClickCallBackListener(clickCallbackListener);
         recyclerView.setAdapter(recyclerAdapter);
 
-        //
         customProgressDialog.show();
         JATPlaygroundName jsoupAsyncTask = new JATPlaygroundName();
         jsoupAsyncTask.execute();
@@ -96,14 +90,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
+                SSLTrustAllCerts.sslTrustAllCerts();
                 String htmlPageUrl = "https://reserv.bucheon.go.kr/site/main/lending/lendingList?tab=0&viewMode=list&inst_cate=01&search_area_div=&lending_inst_nm=football";
                 Document doc = Jsoup.connect(htmlPageUrl).get();
-                Elements tables = doc.select("table[class=table-col pc-col]").select("tbody").select("tr");
+                Elements tables = doc.select("table[class=table-col mb-col]").select("tbody").select("tr");
                 for (Element item : tables) {
                     Elements tds = item.select("td");
                     String placeName = tds.select("a").text().trim();
                     String placeLink = tds.select("a").attr("href");
-                    String bill = tds.get(4).text().trim();
+                    String bill = "";
                     String receptionStatus = tds.select("span").text().trim();
 
                     items.add(new Item(placeName, placeLink, bill, receptionStatus));
@@ -111,6 +106,10 @@ public class MainActivity extends AppCompatActivity {
                     itemLinks.add(placeLink);
                 }
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (KeyManagementException e) {
                 e.printStackTrace();
             }
 

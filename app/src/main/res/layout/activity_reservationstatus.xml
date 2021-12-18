@@ -5,12 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#ededed"
     tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp">
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="#FFFFFF">
 
         <TextView
             android:layout_width="60dp"
@@ -29,14 +32,16 @@
             android:layout_marginRight="10dp"
             android:inputType="textPersonName"
             android:textSize="18dp"
-            android:hint="입력하세요." />
+            android:background="@null"
+            android:hint="팀명을 입력하세요." />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp">
+        android:layout_marginTop="2dp"
+        android:background="#FFFFFF">
 
         <TextView
             android:layout_width="60dp"
@@ -77,11 +82,13 @@
         android:padding="5dp"
         android:textStyle="bold"
         android:textSize="16dp"
-        android:text="예약현황" />
+        android:text="예약현황"
+        android:background="#FFFFFF"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/reservationRecyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"/>
 
 </LinearLayout>
