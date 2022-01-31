@@ -147,7 +147,7 @@ public class ReservationStatusActivity extends AppCompatActivity {
     public void setYearMonth(int year, int month) {
         search_Year = Integer.toString(year);
         search_Month = String.format("%02d", month);
-        replace_Month = Integer.toString(month);
+        replace_Month = String.format("%02d", month);
 
         String result = search_Year + "년 " +  search_Month + "월";
         textViewDate.setText(result);
@@ -187,7 +187,7 @@ public class ReservationStatusActivity extends AppCompatActivity {
                     if (date.startsWith(replace_Month)) {
                         date = date.substring(replace_Month.length(), date.length());
                     }
-                    date = replace_Month + "." + date;
+                    date = replace_Month + "." + String.format("%02d",  Integer.parseInt(date));
 
                     String time = "";
                     String team = "";

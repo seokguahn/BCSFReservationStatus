@@ -1,5 +1,5 @@
 package com.example.firstjava;
 
 public interface ItemClickCallbackListener {
-    void callBack(String title, String url);
+    void callBackMethod(String title, String url, int type);
 }

@@ -39,12 +39,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Item item = items.get(position);
         holder.title.setText(item.getTitle());
-        holder.bill.setText(item.getBill());
+        holder.location.setOnClickListener(new  View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickCallbackListener.callBackMethod(item.getTitle(), item.getIntoUrl(), 0);
+            }
+        });
         holder.receptionStatus.setText(item.getReceptionStatus());
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clickCallbackListener.callBack(item.getTitle(), item.getIntoUrl());
+                clickCallbackListener.callBackMethod(item.getTitle(), item.getIntoUrl(), 1);
             }
         });
 
@@ -61,14 +66,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView title;
-        TextView bill;
+        androidx.appcompat.widget.AppCompatButton location;
         TextView receptionStatus;
         CardView cardview;
 
         public ViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
-            bill = (TextView) itemView.findViewById(R.id.bill);
+            location = (androidx.appcompat.widget.AppCompatButton)itemView.findViewById(R.id.location);
             receptionStatus = (TextView) itemView.findViewById(R.id.receptionStatus);
             cardview = (CardView) itemView.findViewById(R.id.cardview);
         }

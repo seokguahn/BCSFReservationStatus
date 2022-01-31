@@ -10,6 +10,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
 
     ProgressDialog customProgressDialog;
 
+    TextView tvWeatherLeft;
+    ImageView ivWeather;
+    TextView tvWeatherRight;
+
     Button button;
     ArrayList<Item> items = new ArrayList<>();
     RecyclerAdapter recyclerAdapter;
@@ -33,14 +41,43 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> itemPlaces = new ArrayList<>();
     ArrayList<String> itemLinks = new ArrayList<>();
 
+    String mapTitle;
+    String mapUrl;
+
+    CallbackListener CallbackListener = new CallbackListener() {
+        @Override
+        public void callBackMethod(ItemWeatherInfo info) {
+            tvWeatherLeft.setText(info.strdate + "\n" + "부천시날씨");
+            Glide.with(getApplicationContext()).load(info.imageSrc).into(ivWeather);
+            tvWeatherRight.setText(info.ta + "℃(" + info.weatherdesc + ")" + "\n" + "미세먼지"+ info.air +"㎍/m3 ("+ info.cai +")");
+        }
+    };
+
     ItemClickCallbackListener clickCallbackListener = new ItemClickCallbackListener() {
         @Override
-        public void callBack(String title, String url) {
-            Intent intent = new Intent(getApplicationContext(), ReservationStatusActivity.class);
-            intent.putExtra("intoTitle", title);
-            intent.putExtra("intoUrl", url);
-            intent.putExtra("intoSearchType", ReservationStatusActivity.TYPE_SEARCH);
-            startActivity(intent);
+        public void callBackMethod(String title, String url, int type) {
+            switch (type) {
+                case 0:
+                {
+                    mapTitle = title;
+                    mapUrl = url;
+                    customProgressDialog.show();
+                    JATPlaygroundAddress jsoupAsyncTask = new JATPlaygroundAddress();
+                    jsoupAsyncTask.execute();
+                }
+                    break;
+                case 1:
+                {
+                    Intent intent = new Intent(getApplicationContext(), ReservationStatusActivity.class);
+                    intent.putExtra("intoTitle", title);
+                    intent.putExtra("intoUrl", url);
+                    intent.putExtra("intoSearchType", ReservationStatusActivity.TYPE_SEARCH);
+                    startActivity(intent);
+                }
+                    break;
+                default:
+                    break;
+            }
         }
     };
 
@@ -52,6 +89,10 @@ public class MainActivity extends AppCompatActivity {
         customProgressDialog = new ProgressDialog(this);
         customProgressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
+        tvWeatherLeft = (TextView)findViewById(R.id.weatherleft);
+        ivWeather = (ImageView)findViewById(R.id.weatherSrc);
+        tvWeatherRight = (TextView)findViewById(R.id.weatherRight);
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setHasFixedSize(true);
@@ -60,10 +101,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerAdapter = new RecyclerAdapter(getApplicationContext(), items, R.layout.activity_main);
         recyclerAdapter.setItemClickCallBackListener(clickCallbackListener);
         recyclerView.setAdapter(recyclerAdapter);
-
-        customProgressDialog.show();
-        JATPlaygroundName jsoupAsyncTask = new JATPlaygroundName();
-        jsoupAsyncTask.execute();
 
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +115,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // 날씨정보
+        BucheonWeatherInfo bucheonWeatherInfo = new BucheonWeatherInfo(getApplicationContext());
+        bucheonWeatherInfo.setCallBackListener(CallbackListener);
+
+        // 운동장정보
+        customProgressDialog.show();
+        JATPlaygroundName jsoupAsyncTask = new JATPlaygroundName();
+        jsoupAsyncTask.execute();
     }
 
     private class JATPlaygroundName extends AsyncTask<Void, Void, Void> {
@@ -120,6 +166,42 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             customProgressDialog.dismiss();
             recyclerAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private class JATPlaygroundAddress extends AsyncTask<Void, Void, Void> {
+        String address;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                SSLTrustAllCerts.sslTrustAllCerts();
+                String htmlPageUrl = "https://reserv.bucheon.go.kr" + mapUrl;
+                Document doc = Jsoup.connect(htmlPageUrl).get();
+                address = doc.select("div[class=map-btn]").select("a").attr("onclick");
+                address = address.replace("fncGoMap('", "");
+                address = address.replace("'); return false;", "");
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (KeyManagementException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            customProgressDialog.dismiss();
+            MapDialog mapDialog = new MapDialog();
+            mapDialog.show(getSupportFragmentManager(), mapTitle + "#" + address);
         }
     }
 }

@@ -10,6 +10,7 @@
         android:label="부천시 공공서비스 예약 (축구장)"
         android:roundIcon="@mipmap/ic_main_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.FirstJava">
 
         <activity
